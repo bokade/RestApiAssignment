@@ -1,0 +1,79 @@
+package in.sp.controllers;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import in.sp.beans.*;
+import in.sp.service.*;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import org.springframework.web.bind.annotation.PostMapping;
+
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
+@RestController
+public class MyController
+{
+
+	@Autowired
+	SportService sportService;
+	
+	@Autowired
+	TeamService teamService;
+	
+	@Autowired
+	UserService userService;
+	
+	@PostMapping("/add-sports")
+	public Sport addSport(@RequestBody Sport spt)
+	{
+		Sport sport = sportService.addSport(spt);
+		
+		return sport;
+	}
+	
+	@GetMapping("/get-sports")
+	public List<Sport> getAllSports()
+	{
+		List<Sport> list_spt = sportService.getAllSports();
+		return list_spt;
+	}
+	
+	@GetMapping("/get-sports")
+	public List<User> getAllUsers()
+	{
+		List<User> list_usr = userService.getAllUsers();
+		return list_usr;
+	}
+	//foreign key impl
+	@PostMapping("/create-team")
+	public Team addTeam(@RequestBody Team tm,int id)
+	{
+		Team tem = teamService.addTeam(tm,id);
+		
+		return tem;
+	}
+	
+	@GetMapping("/get-teams")
+	public List<Team> getTeams(String sportName)
+	{
+		List<Team> list_tms = teamService.getTeams(sportName);
+		return list_tms;
+	}
+	
+	@GetMapping("/get-teams?city1=city")
+	public List<Team> getTeamsByCity(@RequestParam("city1") String city)
+	{
+		List<Team> list_tmcy = teamService.getTeamsByCity(city);
+		return list_tmcy;
+	}
+	
+	
+	
+	
+}
